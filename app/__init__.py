@@ -13,7 +13,7 @@ from flask_jwt_extended import verify_jwt_in_request
 from app.services.user_service import update_last_access
 
 
-def create_app():
+def create_app(database_uri=None):
     app = Flask(__name__)
     
     app.config['SECRET_KEY'] = getenv('SECRET_KEY', 'dev-secret-key')
@@ -21,11 +21,11 @@ def create_app():
     app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY', 'dev-jwt-secret-key')
     JWTManager(app)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] = getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_uri or getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
     
     db.init_app(app)
     
-    app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
+    app.register_blueprint(auth_bp)
     app.register_blueprint(product_bp)
     app.register_blueprint(price_bp)
     

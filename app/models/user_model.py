@@ -16,6 +16,6 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "email": self.email,
-            "created_at": self.created_at.iso_format(),
-            "last_access": self.last_access.iso_format() if self.last_access else None
+            "created_at": self.created_at.isoformat(),
+            "last_access": self.last_access.isoformat() if self.last_access else None
         }

@@ -10,10 +10,11 @@ class Product(db.Model):
     added_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     last_change = db.Column(db.DateTime,default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
     
+    
     def to_dict(self):       
         return {    
             "id": self.id,
             "product": self.product,
-            "added_at": self.added_at.iso_format(),
-            "last_change": self.last_change.iso_format()
+            "added_at": self.added_at.isoformat(),
+            "last_change": self.last_change.isoformat()
         }

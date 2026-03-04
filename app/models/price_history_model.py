@@ -11,7 +11,7 @@ class PriceHistory(db.Model):
     
     product = db.relationship(
     "Product",
-    backref=db.backref('price_history', lazy=True)
+    backref=db.backref('price_history', lazy=True,  cascade="all, delete-orphan")
     )
     
     def to_dict(self):       
@@ -19,5 +19,5 @@ class PriceHistory(db.Model):
             "id": self.id,
             "product_id": self.product_id,
             "price": self.price,
-            "collected_at": self.collected_at.iso_format()
+            "collected_at": self.collected_at.isoformat()
         }
