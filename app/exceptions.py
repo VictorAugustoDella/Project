@@ -7,5 +7,5 @@ class NotFoundError(Exception):
 class ConflictError(Exception):
     pass
 
-class ValueError(Exception):
+class UnauthorizedError(Exception):
     pass

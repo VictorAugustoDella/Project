@@ -1,19 +1,19 @@
 from app.models.product_model import Product
 from app.models.price_history_model import PriceHistory
 from app.db import db
-from app.routes.product.product_validators import NotFoundError
+from app.exceptions import NotFoundError
 from app.routes.price.price_validators import validate_price, validate_price_fields
 from app.services.price_stats import calculate_stats
 
 
 def calculate_average(product):
-    prices = [p.price for p in product.prices]
+    prices = [p.price for p in product.price_history]
     if not prices:
         return None
     return sum(prices) / len(prices)
 
 def calculate_current(product):
-    prices = [p.price for p in product.prices]
+    prices = [p.price for p in product.price_history]
     if not prices:
         return None
     return product.order_by(PriceHistory.collected_at.desc()).first()

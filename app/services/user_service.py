@@ -4,7 +4,7 @@ from app.db import db
 from app.routes.auth.auth_validators import validate_register_user, validate_login_user
 from app.models.user_model import User
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.exceptions import ValueError
+from app.exceptions import UnauthorizedError
 
 def update_last_access(user_id: int):
     user = User.query.get(user_id)
@@ -33,6 +33,6 @@ def login_user_service(data):
     user = User.query.filter_by(email=validated_data['email']).first()
     
     if not user or not check_password_hash(user.password, validated_data['password']):
-        raise ValueError("email or password are incorrect")
+        raise UnauthorizedError("email or password are incorrect")
     
     return user

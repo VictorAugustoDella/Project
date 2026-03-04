@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from app.routes.auth import auth_bp
 from flask_jwt_extended import create_access_token
-from services.user_service import register_user_service, login_user_service
+from app.services.user_service import register_user_service, login_user_service
 
 @auth_bp.route('/register', methods=['POST'])
 def register_user():   

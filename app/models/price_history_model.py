@@ -19,5 +19,5 @@ class PriceHistory(db.Model):
             "id": self.id,
             "product_id": self.product_id,
             "price": self.price,
-            "collected_at": self.collected_at
+            "collected_at": self.date.iso_format()
         }

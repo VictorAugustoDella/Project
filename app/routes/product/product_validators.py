@@ -14,7 +14,7 @@ def _validate_product_name(product_name):
     if len(product_name) == 0:
         raise ValidationError('Product cannot be empty')
     
-    return product_name.capitalize()
+    return product_name
     
 
 def validate_product_create(data):
@@ -24,7 +24,7 @@ def validate_product_create(data):
     product_name = _validate_product_name(data.get('product'))
     
     return {
-        'product': product_name.capitalize()
+        'product': product_name
     }
     
 
@@ -35,5 +35,5 @@ def validate_product_edit(data):
     product_name = _validate_product_name(data.get('product'))
     
     return {
-        'product': product_name.capitalize()
+        'product': product_name
     }

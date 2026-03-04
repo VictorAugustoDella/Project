@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager, get_jwt_identity
 from app.models.user_model import User
 from app.models.product_model import Product
 from app.models.price_history_model import PriceHistory
-from app.exceptions import ValidationError, NotFoundError, ConflictError, ValueError
+from app.exceptions import ValidationError, NotFoundError, ConflictError, UnauthorizedError
 from flask_jwt_extended import verify_jwt_in_request
 from app.services.user_service import update_last_access
 
@@ -25,9 +25,9 @@ def create_app():
     
     db.init_app(app)
     
-    app.register_blueprint(product_bp, url_prefix='/api/v1/product')
     app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
-    app.register_blueprint(price_bp, url_prefix='/api/v1/price')
+    app.register_blueprint(product_bp)
+    app.register_blueprint(price_bp)
     
     # Handlers de erro
 
@@ -35,7 +35,7 @@ def create_app():
     def handle_validation_error(e):
         return jsonify({"error": str(e)}),400
     
-    @app.errorhandler(ValueError)
+    @app.errorhandler(UnauthorizedError)
     def handle_value_error(e):
         return jsonify({"error": str(e)}), 401
     

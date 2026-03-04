@@ -1,4 +1,4 @@
-from app.exceptions import ValidationError, NotFoundError, ConflictError
+from app.exceptions import ValidationError, ConflictError
 from app.utils.validators import is_valid_email, is_valid_full_name, is_valid_password
 from app.models.user_model import User
 

@@ -10,3 +10,12 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     last_access = db.Column(db.DateTime, nullable=True)
+    
+    def to_dict(self):       
+        return {    
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "created_at": self.created_at,
+            "last_access": self.last_access
+        }
