@@ -28,10 +28,10 @@ def validate_price_fields(fields):
     if not fields:
         return list(ALLOWED_FIELDS)
     
-    requested = fields.split(",")
+    requested = [f.strip for f in fields.split(",")]
 
     for fields in requested:
         if fields not in ALLOWED_FIELDS:
             raise ValidationError(f"Invalid stats fields: {fields}")
 
-    return requested
+    return sorted(ALLOWED_FIELDS)

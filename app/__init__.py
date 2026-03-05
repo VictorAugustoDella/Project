@@ -11,26 +11,27 @@ from app.models.price_history_model import PriceHistory
 from app.exceptions import ValidationError, NotFoundError, ConflictError, UnauthorizedError
 from flask_jwt_extended import verify_jwt_in_request
 from app.services.user_service import update_last_access
+from flask_migrate import Migrate
 
+migrate = Migrate()
 
 def create_app(database_uri=None):
     app = Flask(__name__)
     
     app.config['SECRET_KEY'] = getenv('SECRET_KEY', 'dev-secret-key')
-    
     app.config['JWT_SECRET_KEY'] = getenv('JWT_SECRET_KEY', 'dev-jwt-secret-key')
-    JWTManager(app)
-    
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri or getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
     
     db.init_app(app)
+    migrate.init_app(app, db)
+    
+    JWTManager(app)
     
     app.register_blueprint(auth_bp)
     app.register_blueprint(product_bp)
     app.register_blueprint(price_bp)
     
     # Handlers de erro
-
     @app.errorhandler(ValidationError)
     def handle_validation_error(e):
         return jsonify({"error": str(e)}),400
@@ -60,7 +61,4 @@ def create_app(database_uri=None):
         except Exception:
             pass
    
-    with app.app_context():
-        db.create_all()
-
     return app

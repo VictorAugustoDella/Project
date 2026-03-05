@@ -22,10 +22,12 @@ def validate_register_user(data):
     if not is_valid_password(user_password):
         raise ValidationError('Weak password [min 8 characters, 1 uppercase, 1 lowercase and 1 number]')
     
+    user_email = user_email.strip().lower()
+    
     if User.query.filter_by(email=user_email).first():
         raise ConflictError("Email already registered")
     
-    user_email = user_email.strip().lower()
+    
     user_name = user_name.strip().title()
     
     return {
