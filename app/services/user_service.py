@@ -1,10 +1,9 @@
 from datetime import datetime
 from app.models.user_model import User
 from app.db import db
-from app.routes.auth.auth_validators import validate_register_user, validate_login_user
-from app.models.user_model import User
+from app.validators.auth_validators import validate_register_user, validate_login_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from app.exceptions import UnauthorizedError
+from app.exceptions import UnauthorizedError, ConflictError
 
 def update_last_access(user_id: int):
     user = User.query.get(user_id)
@@ -15,6 +14,9 @@ def update_last_access(user_id: int):
 
 def register_user_service(data):
     validated_data = validate_register_user(data)
+    
+    if User.query.filter_by(email=validated_data['email']).first():
+        raise ConflictError("Email already registered")
 
     user = User(
         name=validated_data['name'],

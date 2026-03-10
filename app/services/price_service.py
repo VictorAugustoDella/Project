@@ -2,7 +2,7 @@ from app.models.product_model import Product
 from app.models.price_history_model import PriceHistory
 from app.db import db
 from app.exceptions import NotFoundError
-from app.routes.price.price_validators import validate_price, validate_price_fields
+from app.validators.price_validators import validate_price, validate_price_fields
 from app.services.price_stats import calculate_stats
 
 

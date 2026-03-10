@@ -1,9 +1,9 @@
 from app.models.product_model import Product
 from app.models.price_history_model import PriceHistory
 from app.db import db
-from app.routes.product.product_validators import validate_product_create, validate_product_edit
+from app.validators.product_validators import validate_product_create, validate_product_edit
 from app.exceptions import NotFoundError
-from app.routes.price.price_validators import validate_price
+from app.validators.price_validators import validate_price
 
 def view_products_service(user_id: int):
     products = Product.query.filter_by(user_id=user_id).all()
