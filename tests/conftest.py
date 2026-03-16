@@ -1,6 +1,6 @@
 from flask_jwt_extended import create_access_token
 import pytest
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash
 from app import create_app
 from app.db import db
 from app.models.price_history_model import PriceHistory
@@ -67,4 +67,47 @@ def auth_header(user):
     _, token = user
     return {"Authorization": f"Bearer {token}"}
 
+@pytest.fixture
+def product_with_multiple_prices(app, user):
+    user_obj, _ = user
+    with app.app_context():
+        product = Product(
+            product="Mouse Gamer",
+            user_id=user_obj.id
+        )
+        db.session.add(product)
+        db.session.commit()
+        db.session.refresh(product)
 
+        prices = [
+            PriceHistory(product_id=product.id, price=100.0),
+            PriceHistory(product_id=product.id, price=90.0),
+            PriceHistory(product_id=product.id, price=110.0),
+        ]
+        db.session.add_all(prices)
+        db.session.commit()
+
+        for price in prices:
+            db.session.refresh(price)
+
+        yield product, prices
+        
+@pytest.fixture
+def second_user(app):
+    with app.app_context():
+        user = User(
+            name="Other User",
+            email="otheruser@gmail.com",
+            password=generate_password_hash("OtherPassword123")
+        )
+        db.session.add(user)
+        db.session.commit()
+
+        token = create_access_token(identity=str(user.id))
+        yield user, token
+
+
+@pytest.fixture
+def second_auth_header(second_user):
+    _, token = second_user
+    return {"Authorization": f"Bearer {token}"}
