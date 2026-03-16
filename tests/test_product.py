@@ -9,7 +9,8 @@ def test_create_product_success(client, auth_header):
         headers=auth_header,
         json={
             "product": "Mouse Gamer",
-            "price": 120.50
+            "price": 120.50,
+            "link": "https://amazon.com.br/mouse-test"
         }
     )
 
@@ -23,14 +24,15 @@ def test_create_product_missing_field(client, auth_header):
         "/api/v1/products",
         headers=auth_header,
         json={
-            "product": "Mouse Gamer"
+            "product": "Mouse Gamer",
+            "price": 120.50
         }
     )
     
     data = response.get_json()
 
     assert response.status_code == 400
-    assert "Price is required" in data['error']
+    assert ("Product link is required") in data['error']
 
 def test_create_product_invalid_price(client, auth_header):
     response = client.post(
@@ -38,7 +40,8 @@ def test_create_product_invalid_price(client, auth_header):
         headers=auth_header,
         json={
             "product": "Mouse Gamer",
-            "price": "invalid price"
+            "price": "invalid price",
+            "link": "https://amazon.com.br/mouse-test"
         }
     )
     

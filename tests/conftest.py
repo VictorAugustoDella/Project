@@ -45,6 +45,7 @@ def product(app, user):
     with app.app_context():
         product = Product(
             product='Peanut butter',
+            link='https://amazon.com.br/test-product',
             user_id=user_obj.id)
         
         db.session.add(product)
@@ -73,6 +74,7 @@ def product_with_multiple_prices(app, user):
     with app.app_context():
         product = Product(
             product="Mouse Gamer",
+            link='https://amazon.com.br/test-product2',
             user_id=user_obj.id
         )
         db.session.add(product)
