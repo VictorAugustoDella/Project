@@ -22,6 +22,7 @@ jobs:
         run: |
           pip install -r requirements.txt
           pip install -r dev-requirements.txt
+          python -m playwright install --with-deps chromium
       
       - name: Run tests
         run: pytest
