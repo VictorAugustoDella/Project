@@ -12,6 +12,6 @@ def is_valid_password(password: str) -> bool:
     pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$'
     return re.match(pattern, password) is not None
 
-def is_valid_link(link: str) -> bool:
+def is_valid_url(link: str) -> bool:
     pattern = r'^(https?:\/\/)?(www\.)?([A-Za-z0-9-]+\.)+[A-Za-z]{2,}(\/\S*)?$'
     return re.match(pattern, link.strip()) is not None

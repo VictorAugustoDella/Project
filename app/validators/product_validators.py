@@ -1,5 +1,5 @@
 from app.exceptions import ValidationError
-from app.utils.field_validators import is_valid_link
+from app.utils.field_validators import is_valid_url
 
 def _validate_product_name(product_name):
     
@@ -17,15 +17,15 @@ def _validate_product_name(product_name):
     
     return product_name
 
-def _validate_product_link(product_link):
+def _validate_product_url(product_url):
     
-    if not product_link:
-        raise ValidationError('Product link is required')
+    if not product_url:
+        raise ValidationError('Product url is required')
     
-    if not is_valid_link(product_link):
-        raise ValidationError('Invalid link')
+    if not is_valid_url(product_url):
+        raise ValidationError('Invalid url')
     
-    return product_link
+    return product_url
     
 
 def validate_product_create(data):
@@ -33,11 +33,11 @@ def validate_product_create(data):
         raise ValidationError("Missing data")
     
     product_name = _validate_product_name(data.get('product'))
-    product_link = _validate_product_link(data.get('link')) 
+    product_url = _validate_product_url(data.get('url')) 
     
     return {
         'product': product_name,
-        'link': product_link
+        'url': product_url
     }
     
 
