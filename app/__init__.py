@@ -12,6 +12,7 @@ from app.exceptions import ValidationError, NotFoundError, ConflictError, Unauth
 from flask_jwt_extended import verify_jwt_in_request
 from app.services.user_service import update_last_access
 from flask_migrate import Migrate
+from werkzeug.exceptions import HTTPException
 
 migrate = Migrate()
 
@@ -34,10 +35,10 @@ def create_app(database_uri=None):
     # Handlers de erro
     @app.errorhandler(ValidationError)
     def handle_validation_error(e):
-        return jsonify({"error": str(e)}),400
+        return jsonify({"error": str(e)}), 400
     
     @app.errorhandler(UnauthorizedError)
-    def handle_value_error(e):
+    def handle_unauthorized_error(e):
         return jsonify({"error": str(e)}), 401
     
     @app.errorhandler(NotFoundError)
@@ -47,6 +48,14 @@ def create_app(database_uri=None):
     @app.errorhandler(ConflictError)
     def handle_conflict_error(e):
         return jsonify({"error": str(e)}), 409
+    
+    @app.errorhandler(Exception)
+    def handle_internal_error(e):
+        if isinstance(e, HTTPException):
+            return e
+
+        app.logger.exception("Unhandled exception: %s", e)
+        return jsonify({"error": "Internal server error"}), 500
     
     
     # update last access

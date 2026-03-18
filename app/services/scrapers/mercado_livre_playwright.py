@@ -1,4 +1,5 @@
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
+from app.exceptions import ValidationError
 
 def ml_scraper_price(link):
     with sync_playwright() as pw:
@@ -14,14 +15,14 @@ def ml_scraper_price(link):
         price = page.locator('meta[itemprop="price"]').get_attribute("content")
 
         if price is None:
-            raise ValueError("Price not found")
+            raise ValidationError("Price not found")
 
         price = price.replace(".", ",")
         
         scraped_name = page.locator("span.ui-pdp-title").inner_text().strip()
         
         if scraped_name is None:
-            raise ValueError('Name not found')
+            raise ValidationError('Name not found')
         
         browser.close()
         return price, scraped_name
