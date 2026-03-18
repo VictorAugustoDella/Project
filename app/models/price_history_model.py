@@ -6,7 +6,7 @@ class PriceHistory(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     product_id = db.Column(db.Integer, db.ForeignKey('products.id'), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.Numeric(10,2), nullable=False)
     collected_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     
     product = db.relationship(
@@ -18,6 +18,6 @@ class PriceHistory(db.Model):
         return {    
             "id": self.id,
             "product_id": self.product_id,
-            "price": self.price,
+            "price": float(self.price),
             "collected_at": self.collected_at.isoformat()
         }

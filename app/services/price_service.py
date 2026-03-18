@@ -29,7 +29,3 @@ def view_product_prices_stats_by_id_service(user_id: int, product_id: int, field
 
     stats = calculate_stats(prices_query, validated_fields)
     return stats
-    
-        
-     
-    

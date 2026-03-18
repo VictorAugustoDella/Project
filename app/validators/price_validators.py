@@ -1,3 +1,5 @@
+from decimal import Decimal, InvalidOperation
+
 from app.exceptions import ValidationError
 
 def _validate_scraped_price(price):
@@ -8,14 +10,14 @@ def _validate_scraped_price(price):
         price = price.replace(".", "").replace(",", ".")
 
     try:
-        price = float(price)
-    except (TypeError, ValueError):
+        price = Decimal(price)
+    except (TypeError, InvalidOperation):
         raise ValidationError("Scraped price is invalid")
 
     if price <= 0:
         raise ValidationError("Scraped price must be greater than 0")
 
-    return price
+    return price.quantize(Decimal("0.01"))
 
 
     

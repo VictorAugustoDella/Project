@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from flask_jwt_extended import create_access_token
 import pytest
 from werkzeug.security import generate_password_hash
@@ -56,7 +58,7 @@ def product(app, user):
         
         price = PriceHistory(
             product_id=product.id,
-            price=43.50
+            price=Decimal("43.50")
         )
         
         db.session.add(price)
@@ -86,9 +88,9 @@ def product_with_multiple_prices(app, user):
         db.session.refresh(product)
 
         prices = [
-            PriceHistory(product_id=product.id, price=100.0),
-            PriceHistory(product_id=product.id, price=90.0),
-            PriceHistory(product_id=product.id, price=110.0),
+            PriceHistory(product_id=product.id, price=Decimal("100.0")),
+            PriceHistory(product_id=product.id, price=Decimal("90.0")),
+            PriceHistory(product_id=product.id, price=Decimal("110.0")),
         ]
         db.session.add_all(prices)
         db.session.commit()
