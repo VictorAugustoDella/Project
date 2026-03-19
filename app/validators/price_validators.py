@@ -2,7 +2,7 @@ from decimal import Decimal, InvalidOperation
 
 from app.exceptions import ValidationError
 
-def _validate_scraped_price(price):
+def validate_scraped_price(price):
     if price is None:
         raise ValidationError("Could not scrape product price")
     

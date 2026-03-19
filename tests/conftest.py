@@ -47,7 +47,7 @@ def product(app, user):
     with app.app_context():
         product = Product(
             product='Test Product',
-            url='https://amazon.com.br/test-product',
+            url='https://www.amazon.com.br/test-product',
             site='amazon',
             scraped_name='scraped_name_example',
             user_id=user_obj.id)
@@ -78,7 +78,7 @@ def product_with_multiple_prices(app, user):
     with app.app_context():
         product = Product(
             product="Test Product2",
-            url='https://amazon.com.br/test-product2',
+            url='https://www.amazon.com.br/test-product2',
             site='amazon',
             scraped_name='scraped_name2',
             user_id=user_obj.id

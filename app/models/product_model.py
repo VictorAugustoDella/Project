@@ -4,6 +4,10 @@ from datetime import datetime
 class Product(db.Model):
     __tablename__= 'products'
     
+    __table_args__ = (
+        db.UniqueConstraint("user_id", "url", name="uq_user_product_url"),
+    )
+    
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     product = db.Column(db.String, nullable=False)
